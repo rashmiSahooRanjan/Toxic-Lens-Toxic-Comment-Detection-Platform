@@ -1,0 +1,16 @@
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+frontend/dist/
+backend/uploads/
+.DS_Store
+
+# Root duplicate model weights (primary artifacts maintained in model/)
+/toxic_comment_model.h5
+/tokenizer.pkl
+/best_toxic_model.keras/
+/toxic_comment_model.keras/

@@ -1,0 +1,12 @@
+import { Router } from "express";
+import { auth, roles } from "../middleware/auth.js";
+import * as c from "../controllers/admin.js";
+const r = Router();
+r.use(auth, roles("admin"));
+r.get("/users", c.users);
+r.patch("/users/:id/role", c.role);
+r.patch("/users/:id/status", c.status);
+r.get("/audit", c.audit);
+r.get("/dashboard", c.dashboard);
+r.post("/seed", c.seedAdmin);
+export default r;
