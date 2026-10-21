@@ -132,6 +132,17 @@ def predict_many(texts: List[str], threshold: float) -> List[Dict[str, Any]]:
     return results
 
 
+@app.get("/")
+def root():
+    return {
+        "service": "ToxicLens ML API",
+        "status": "ok" if model is not None else "degraded",
+        "modelLoaded": model is not None,
+        "docs": "/docs",
+        "health": "/health",
+    }
+
+
 @app.get("/health")
 def health():
     return {"status": "ok" if model is not None else "degraded", "modelLoaded": model is not None, "tokenizerLoaded": tokenizer is not None, "error": load_error}
