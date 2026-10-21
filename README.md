@@ -304,6 +304,12 @@ When running `npm run seed:admin`, the following default administrator account i
 
 ---
 
+## 👨‍💻 Authors
+
+| Name                          | Role      |
+| ----------------------------- | --------- |
+| **Rashmi Ranjan Sahoo** |  Developer |
+| **Subhrajit Das**     |ML Developer |
 ## ☁️ Render Cloud Deployment Guide
 
 This project is pre-configured with a root [render.yaml](render.yaml) file for automated Infrastructure-as-Code deployment.
