@@ -12,8 +12,35 @@ import { errorHandler } from "./middleware/error.js";
 const app = express();
 app.set("trust proxy", 1);
 
-const clientOrigin = env.clientUrl ? env.clientUrl.replace(/\/$/, "") : "*";
-app.use(cors({ origin: [clientOrigin, "http://localhost:5173"], credentials: true }));
+const allowedOrigins = [
+  env.clientUrl ? env.clientUrl.replace(/\/+$/, "") : null,
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      // Automatically allow all Render deployment subdomains (e.g. https://toxic-frontend.onrender.com)
+      if (/^https:\/\/.*\.onrender\.com$/.test(origin)) {
+        return callback(null, true);
+      }
+
+      // Allow explicitly configured origins or localhost
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Permissive fallback
+      return callback(null, true);
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json({ limit: "2mb" }));
 app.use(
   rateLimit({
