@@ -11,9 +11,9 @@
 **ToxicLens** is a full-stack, enterprise-grade AI moderation and toxicity analysis platform. Powered by a deep Bidirectional LSTM (BiLSTM) neural network trained on over 150,000 multi-label comments, ToxicLens detects and scores toxic speech across six distinct categories in real-time. Built with a decoupled microservice architecture featuring React, Node.js/Express, FastAPI, and MongoDB.
 
 ✨ Deployment Links :-
-**Frontend** - https://toxic-frontend.onrender.com/
-**Backend** - https://toxic-backend-zoo9.onrender.com/api/health
-**ML Service** - https://toxic-ml-servic.onrender.com/
+- **Frontend** - https://toxic-frontend.onrender.com/
+- **Backend** - https://toxic-backend-zoo9.onrender.com/api/health
+- **ML Service** - https://toxic-ml-servic.onrender.com/
 ---
 
 ## 📌 Table of Contents
