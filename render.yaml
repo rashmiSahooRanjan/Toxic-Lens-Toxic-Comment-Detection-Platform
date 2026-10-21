@@ -1,0 +1,63 @@
+services:
+  # -------------------------------------------------------------
+  # 1. FRONTEND: React + Vite Single Page Application
+  # -------------------------------------------------------------
+  - type: web
+    name: toxic-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: toxic-backend
+          envVarKey: RENDER_EXTERNAL_URL
+
+  # -------------------------------------------------------------
+  # 2. BACKEND: Node.js Express API
+  # -------------------------------------------------------------
+  - type: web
+    name: toxic-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        fromService:
+          type: web
+          name: toxic-frontend
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: ML_SERVICE_URL
+        fromService:
+          type: web
+          name: toxic-ml-service
+          envVarKey: RENDER_EXTERNAL_URL
+
+  # -------------------------------------------------------------
+  # 3. ML SERVICE: Python FastAPI + Keras Classifier
+  # -------------------------------------------------------------
+  - type: web
+    name: toxic-ml-service
+    runtime: python
+    plan: starter # Starter plan (2GB RAM) is required; Free Tier (512MB RAM) will crash with OOM
+    buildCommand: pip install -r ml-service/requirements.txt
+    startCommand: cd ml-service && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.14

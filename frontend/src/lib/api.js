@@ -1,4 +1,8 @@
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+let baseApi = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+if (!baseApi.endsWith("/api")) {
+  baseApi = baseApi.replace(/\/$/, "") + "/api";
+}
+const API = baseApi;
 export function token() {
   return localStorage.getItem("tg_token");
 }
